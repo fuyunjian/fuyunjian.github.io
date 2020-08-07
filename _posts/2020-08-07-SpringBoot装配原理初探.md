@@ -117,6 +117,7 @@ public class SpringbootdemoApplication {
 ```
 * @SpringBootApplication：标注这个类是一个Springboot的应用。
 * SpringApplication.run()：run()是一个静态方法，通过反射，加载了类对象。
+
 #### 2.1 @SpringBootApplication
 &emsp;&emsp;`@SpringBootApplication`标注这个类是一个**SpringBoot**的应用，如果去掉了这个注解，这个程序是不能运行的。这是一个组合注解，点进去可以发现还包含了许多其他的内容：
 ```java
@@ -356,7 +357,8 @@ private static Map<String, List<String>> loadSpringFactories(@Nullable ClassLoad
 ```java
 Enumeration<URL> urls = classLoader != null ? classLoader.getResources("META-INF/spring.factories") : ClassLoader.getSystemResources("META-INF/spring.factories");
 ```
-**思考：**
+**思考**
+
 &emsp;&emsp;**META-INF/spring.factories**中包含了那么多的配置，为什么有的配置没有生效，需要导入对应的start才能生效呢？
 &emsp;&emsp;在该文件配置中，每一个类中都有**@ConditionalOnClass**这个注解，这其实是一个判断条件，只在条件成立的情况下才会加载这个类，比如点进`org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration`，有这样的语句
 ```java
@@ -382,6 +384,7 @@ public static void main ( String[] args ) {
 3. 查找并加载所有可用初始化器，设置到initializer属性中
 4. 找出所有的应用程序监听器，设置到listeners属性中
 5. 推断并设置main方法的定义类，找到可运行的主类
+
 构造方法：
 ```java
 public SpringApplication(ResourceLoader resourceLoader, Class<?>... primarySources) {
@@ -449,6 +452,7 @@ static WebApplicationType deduceFromClasspath() {
 |REACTIVE | AnnotationConfigReactiveWebServerApplicationContext |
 
 **加载初始化器**
+
 &emsp;&emsp;首先通过`getSpringFactoriesInstances(ApplicationContextInitializer.class)`方法在`META-INF/spring.factories `文件下查找ApplicationContextInitializer类型对应的资源名称。
 ```java
 private <T> Collection<T> getSpringFactoriesInstances(Class<T> type, Class<?>[] parameterTypes, Object... args) {
@@ -463,6 +467,7 @@ private <T> Collection<T> getSpringFactoriesInstances(Class<T> type, Class<?>[] 
 加载监听器和上述过程完全一样，下面可以做个流程图来看看调用的过程。
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200807151718215.png#pic_center)
 **推断主类**：
+
 &emsp;&emsp;最后一步就是推断运行主类，通过遍历异常堆栈找到方法名称是main的类，将其作为主类。
 ```java
 private Class<?> deduceMainApplicationClass() {
@@ -535,6 +540,7 @@ public ConfigurableApplicationContext run(String... args) {
   }
 ```
 > 这一部分的内容实在是太多了，所以这里不介绍了，我弄明白了再说...
+
 ### 3. 总结
 &emsp;&emsp;**SpringBoot**所有的配置都是在启动的时候扫描并加载：
 &emsp;&emsp;扫描的文件是`"META-INF/spring.factories"`，所有的配置类都在这个当中，但是不一定所有的配置类都会生效，需要判断条件是否满足，即导入了对应的start就会有对应的启动器，有了启动器，自动装配就会生效，就配置成功 了。
