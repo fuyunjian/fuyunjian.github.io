@@ -6,7 +6,6 @@ catalog: true
 tags:
     - Blog
 ---
-@[TOC](目录--Content)
 ## 原理探究
 ### 1. SpringBoot的pom.xml
 #### 1.1 依赖的父工程
@@ -314,10 +313,12 @@ public static List<String> loadFactoryNames(Class<?> factoryType, @Nullable Clas
     return (List)loadSpringFactories(classLoader).getOrDefault(factoryTypeName, Collections.emptyList());
 }
 ```
-&emsp;&emsp;**==上面做了两件事情==**：
+&emsp;&emsp;**上面做了两件事情**：
 * 获取类的名称
 * 得到默认的值
+
 Question：默认的值是什么呢？再看一下上面调用的方法。
+
 ```java
 private static Map<String, List<String>> loadSpringFactories(@Nullable ClassLoader classLoader) {
     MultiValueMap<String, String> result = (MultiValueMap)cache.get(classLoader);
@@ -372,6 +373,7 @@ public static void main ( String[] args ) {
 这一部分包括两部分
 * SpringApplication类
 * run方法
+
 ##### 2.2.1  SpringApplication
 &emsp;&emsp;SpringApplication类用于引导和启动一个Spring应用程序(即SpringBoot开发的应用)。
 这个类主要做了以下四件事情：
